@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Build description -->
+    <artifactId>testFalseCacheHitSub2</artifactId>
+    <packaging>pom</packaging>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Test</name>
+
+    <parent>
+        <artifactId>testFalseCacheHit</artifactId>
+        <groupId>com.googlecode.maven-download-plugin.it</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <!--Ensuring sub1 is built first-->
+    <dependencies>
+        <dependency>
+            <groupId>com.googlecode.maven-download-plugin.it</groupId>
+            <artifactId>testFalseCacheHitSub1</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <!--Downloading the same url as in parent pom, so file will be in cache when parent build is run-->
+                <groupId>com.googlecode.maven-download-plugin</groupId>
+                <artifactId>download-maven-plugin</artifactId>
+                <version>${testing.versionUnderTest}</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>wget</goal>
+                        </goals>
+                        <configuration>
+                            <url>http://hadoop.apache.org/skin/print.css</url>
+                            <outputFileName>file</outputFileName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
